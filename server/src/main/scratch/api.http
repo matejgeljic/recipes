@@ -1,0 +1,36 @@
+### Create new Recipie
+POST http://localhost:4000/api/v1/recipes
+Content-Type: application/json
+
+{
+  "name": "Spaghetti Bolognese",
+  "description": "Classic Italian pasta with meat sauce",
+  "ingredients": [
+    {
+      "name": "Spaghetti",
+      "quantity": 200,
+      "unit": "GRAMS"
+    },
+    {
+      "name": "Ground Beef",
+      "quantity": 300,
+      "unit": "GRAMS"
+    },
+    {
+      "name": "Tomato Sauce",
+      "quantity": 150,
+      "unit": "MILLILITERS"
+    }
+  ],
+  "instructions": [
+    "Boil the spaghetti according to package instructions.",
+    "Cook the beef until browned.",
+    "Add tomato sauce and simmer for 10 minutes.",
+    "Mix with spaghetti and serve."
+  ],
+  "preparationTime": "PT30M",
+  "servings": 2,
+  "dishType": "MAIN_DISH",
+  "dietaryInformation": "NONE",
+  "status": "PUBLISHED"
+}
