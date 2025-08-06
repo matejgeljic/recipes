@@ -90,5 +90,21 @@ public class Recipe {
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
 
+    // Helper methods for bidirectional relationship
+    public void addIngredient(Ingredient ingredient) {
+        ingredients.add(ingredient);
+        ingredient.setRecipe(this);
+    }
 
+    public void removeIngredient(Ingredient ingredient) {
+        ingredients.remove(ingredient);
+        ingredient.setRecipe(null);
+    }
+
+    public void setIngredients(List<Ingredient> ingredients) {
+        this.ingredients.clear();
+        if (ingredients != null) {
+            ingredients.forEach(this::addIngredient);
+        }
+    }
 }
