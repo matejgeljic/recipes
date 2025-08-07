@@ -21,7 +21,7 @@ public class CreateRecipeRequestDto {
     @NotEmpty(message = "Ingredients are required")
     @Valid
     private List<CreateIngredientRequestDto> ingredients;
-    @NotEmpty(message = "Ingredients are required")
+    @NotEmpty(message = "Instructions are required")
     private List<String> instructions;
     private Duration preparationTime;
     private Integer servings;
