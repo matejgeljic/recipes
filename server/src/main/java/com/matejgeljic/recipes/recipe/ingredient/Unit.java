@@ -1,4 +1,4 @@
-package com.matejgeljic.recipes.recipe;
+package com.matejgeljic.recipes.recipe.ingredient;
 
 public enum Unit {
     GRAMS,

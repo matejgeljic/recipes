@@ -1,5 +1,10 @@
 package com.matejgeljic.recipes.recipe;
 
+import com.matejgeljic.recipes.exception.IngredientNotFoundException;
+import com.matejgeljic.recipes.exception.RecipeNotFoundException;
+import com.matejgeljic.recipes.exception.RecipeUpdateException;
+import com.matejgeljic.recipes.recipe.ingredient.Ingredient;
+import com.matejgeljic.recipes.recipe.ingredient.UpdateIngredientRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +12,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +27,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     @Transactional
-    public Recipe createRecipe(CreateRecipeRequest recipe) {
+    public Recipe createRecipe(UUID publisherId, CreateRecipeRequest recipe) {
         Recipe recipeToCreate = getRecipeToCreate(recipe);
 
         recipe.getIngredients().forEach(ingredientRequest -> {
@@ -31,6 +41,65 @@ public class RecipeServiceImpl implements RecipeService {
         log.info("Recipe created successfully with id: {}", recipeToCreate.getId());
 
         return recipeRepository.save(recipeToCreate);
+    }
+
+    @Override
+    @Transactional
+    public Recipe updateRecipeForPublisher(UUID publisherId, UUID recipeId, UpdateRecipeRequest recipe) {
+        if(recipe.getId() == null) {
+            throw new RecipeNotFoundException("Recipe ID cannot be null");
+        }
+
+        if(!recipe.getId().equals(recipeId)) {
+            throw new RecipeUpdateException("Cannot update the ID of a recipe");
+        }
+
+        Recipe existingRecipe = recipeRepository
+                .findByIdAndPublisherId(recipeId, publisherId)
+                .orElseThrow(() -> new RecipeNotFoundException(String.format("Recipe with id '%s' not found", recipeId)));
+
+        existingRecipe.setName(recipe.getName());
+        existingRecipe.setDescription(recipe.getDescription());
+        existingRecipe.setInstructions(recipe.getInstructions());
+        existingRecipe.setPreparationTime(recipe.getPreparationTime());
+        existingRecipe.setServings(recipe.getServings());
+        existingRecipe.setDishType(recipe.getDishType());
+        existingRecipe.setDietaryInformation(recipe.getDietaryInformation());
+        existingRecipe.setStatus(recipe.getStatus());
+
+        Set<UUID> requestIngredientIds = recipe.getIngredients()
+                .stream()
+                .map(UpdateIngredientRequest::getId)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+        existingRecipe.getIngredients().removeIf(
+                existingIngredient -> !requestIngredientIds.contains(existingIngredient.getId())
+        );
+
+        Map<UUID, Ingredient> existingIngredientIndex = existingRecipe.getIngredients().stream()
+                .collect(Collectors.toMap(Ingredient::getId, Function.identity()));
+
+        for(UpdateIngredientRequest ingredient : recipe.getIngredients()) {
+            if(ingredient.getId() == null) {
+                // Create
+                Ingredient newIngredient = new Ingredient();
+                newIngredient.setName(ingredient.getName());
+                newIngredient.setQuantity(ingredient.getQuantity());
+                newIngredient.setUnit(ingredient.getUnit());
+                existingRecipe.getIngredients().add(newIngredient);
+            } else if(existingIngredientIndex.containsKey(ingredient.getId())) {
+                // update
+                Ingredient existingIngredient = existingIngredientIndex.get(ingredient.getId());
+                existingIngredient.setName(ingredient.getName());
+                existingIngredient.setQuantity(ingredient.getQuantity());
+                existingIngredient.setUnit(ingredient.getUnit());
+            } else {
+                throw new IngredientNotFoundException(String.format("Ingredient with id '%s' not found", ingredient.getId()));
+            }
+        }
+
+        return recipeRepository.save(existingRecipe);
     }
 
     @Override

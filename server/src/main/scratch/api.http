@@ -34,3 +34,52 @@ Content-Type: application/json
   "dietaryInformation": "NONE",
   "status": "PUBLISHED"
 }
+
+### Update existing Recipe
+PUT http://localhost:4000/api/v1/recipes/3db2d055-cf37-45be-8cc9-84673dab0b29
+Content-Type: application/json
+
+{
+  "id": "3db2d055-cf37-45be-8cc9-84673dab0b29",
+  "name": "Spaghetti Bolognese updated",
+  "description": "Classic Italian pasta with meat sauce",
+  "ingredients": [
+    {
+      "id": "752f1c78-ad95-4b46-ab27-7a0b232c6262",
+      "name": "Spaghetti",
+      "quantity": 200.0,
+      "unit": "GRAMS",
+      "createdAt": "2025-08-08T14:52:44.903034",
+      "updatedAt": "2025-08-08T14:52:44.903034"
+    },
+    {
+      "id": "3ce9bf45-c846-4a26-8726-c51bcd3cca4d",
+      "name": "Ground Beef",
+      "quantity": 300.0,
+      "unit": "GRAMS",
+      "createdAt": "2025-08-08T14:52:44.904221",
+      "updatedAt": "2025-08-08T14:52:44.904221"
+    },
+    {
+      "id": "0ee7a93e-6083-4bb0-b998-df416e108ac0",
+      "name": "Tomato Sauce",
+      "quantity": 150.0,
+      "unit": "MILLILITERS",
+      "createdAt": "2025-08-08T14:52:44.904298",
+      "updatedAt": "2025-08-08T14:52:44.904298"
+    }
+  ],
+  "instructions": [
+    "Boil the spaghetti according to package instructions.",
+    "Cook the beef until browned.",
+    "Add tomato sauce and simmer for 10 minutes.",
+    "Mix with spaghetti and serve."
+  ],
+  "preparationTime": "PT30M",
+  "servings": 2,
+  "dishType": "MAIN_DISH",
+  "dietaryInformation": "NONE",
+  "status": "PUBLISHED",
+  "createdAt": "2025-08-08T14:52:44.89179",
+  "updatedAt": "2025-08-08T14:52:44.89179"
+}

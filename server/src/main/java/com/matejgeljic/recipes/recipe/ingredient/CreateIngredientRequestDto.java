@@ -1,4 +1,4 @@
-package com.matejgeljic.recipes.recipe;
+package com.matejgeljic.recipes.recipe.ingredient;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

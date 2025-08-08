@@ -1,5 +1,6 @@
-package com.matejgeljic.recipes.recipe;
+package com.matejgeljic.recipes.recipe.ingredient;
 
+import com.matejgeljic.recipes.recipe.Recipe;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;

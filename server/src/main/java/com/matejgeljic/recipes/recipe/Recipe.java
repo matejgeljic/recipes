@@ -1,5 +1,6 @@
 package com.matejgeljic.recipes.recipe;
 
+import com.matejgeljic.recipes.recipe.ingredient.Ingredient;
 import com.matejgeljic.recipes.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
