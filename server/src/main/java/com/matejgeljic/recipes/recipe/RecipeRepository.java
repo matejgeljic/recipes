@@ -10,6 +10,7 @@ import java.util.UUID;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
+    Page<Recipe> findByPublisherId(UUID publisherId, Pageable pageable);
     Optional<Recipe> findByIdAndPublisherId(UUID id, UUID publisherId);
     Page<Recipe> findByStatus(RecipeStatus status, Pageable pageable);
 }

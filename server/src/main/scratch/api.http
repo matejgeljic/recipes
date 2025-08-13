@@ -1,5 +1,29 @@
+### Configuration Variables
+@keycloak-realm = recipes-sharing-platform
+@keycloak-url = http://localhost:9090
+@client-id = recipes-sharing-platform-app
+@test-username = test.user@gmail.com
+@test-password = password
+@client-secret = 2gPzFv9qEoOBGZfDr2nWBSDGi7DL0TOb
+@api-url = http://localhost:4000/api/v1
+
+### 1. Login - Get Access Token from Keycloak
+# This request gets an access token that will be used for authenticated endpoints
+# Run this first before any authenticated requests
+POST {{keycloak-url}}/realms/{{keycloak-realm}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id={{client-id}}&client_secret={{client-secret}}&username={{test-username}}&password={{test-password}}
+> {%
+    client.global.set("auth_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token);
+    client.log("✅ Token refreshed successfully!");
+%}
+
 ### Create new Recipie
-POST http://localhost:4000/api/v1/recipes
+# Run the login request first, then run this
+POST {{api-url}}/recipes
+Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
@@ -36,37 +60,39 @@ Content-Type: application/json
 }
 
 ### Update existing Recipe
-PUT http://localhost:4000/api/v1/recipes/3db2d055-cf37-45be-8cc9-84673dab0b29
+# Run the login request first, then run this
+PUT {{api-url}}/recipes/29280218-71d6-458d-9746-388942275d1b
+Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "id": "3db2d055-cf37-45be-8cc9-84673dab0b29",
+  "id": "29280218-71d6-458d-9746-388942275d1b",
   "name": "Spaghetti Bolognese updated",
   "description": "Classic Italian pasta with meat sauce",
   "ingredients": [
     {
-      "id": "752f1c78-ad95-4b46-ab27-7a0b232c6262",
-      "name": "Spaghetti",
+      "id": "87e0dd78-8439-41cb-956b-cbd087223fbb",
+      "name": "Spaghetti updated",
       "quantity": 200.0,
       "unit": "GRAMS",
-      "createdAt": "2025-08-08T14:52:44.903034",
-      "updatedAt": "2025-08-08T14:52:44.903034"
+      "createdAt": "2025-08-12T14:38:37.470493",
+      "updatedAt": "2025-08-12T14:38:37.470493"
     },
     {
-      "id": "3ce9bf45-c846-4a26-8726-c51bcd3cca4d",
+      "id": "ff759247-2b20-4cb7-9cc3-dbf086753cae",
       "name": "Ground Beef",
       "quantity": 300.0,
       "unit": "GRAMS",
-      "createdAt": "2025-08-08T14:52:44.904221",
-      "updatedAt": "2025-08-08T14:52:44.904221"
+      "createdAt": "2025-08-12T14:38:37.470586",
+      "updatedAt": "2025-08-12T14:38:37.470586"
     },
     {
-      "id": "0ee7a93e-6083-4bb0-b998-df416e108ac0",
+      "id": "1072695a-1b14-4255-9618-124b9cc7b705",
       "name": "Tomato Sauce",
       "quantity": 150.0,
       "unit": "MILLILITERS",
-      "createdAt": "2025-08-08T14:52:44.904298",
-      "updatedAt": "2025-08-08T14:52:44.904298"
+      "createdAt": "2025-08-12T14:38:37.470659",
+      "updatedAt": "2025-08-12T14:38:37.470659"
     }
   ],
   "instructions": [
@@ -80,6 +106,6 @@ Content-Type: application/json
   "dishType": "MAIN_DISH",
   "dietaryInformation": "NONE",
   "status": "PUBLISHED",
-  "createdAt": "2025-08-08T14:52:44.89179",
-  "updatedAt": "2025-08-08T14:52:44.89179"
+  "createdAt": "2025-08-12T14:38:37.469536",
+  "updatedAt": "2025-08-12T14:38:37.469536"
 }

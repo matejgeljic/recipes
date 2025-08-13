@@ -16,18 +16,19 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, UserProvisioningFilter userProvisioningFilter) throws Exception {
-//        http
-//                .authorizeHttpRequests(authorize ->
-//                        authorize
-//                                .requestMatchers(HttpMethod.GET, "/api/v1/recipes/**").permitAll()
-//                                // catch all rule
-//                                .anyRequest().authenticated())
-//                .csrf(AbstractHttpConfigurer::disable)
-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//                .oauth2ResourceServer(oauth2 -> oauth2.jwt(
-//                        Customizer.withDefaults()
-//                ))
-//                .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
+        http
+                .authorizeHttpRequests(authorize ->
+                        authorize
+                                .requestMatchers(HttpMethod.GET, "/api/v1/recipes/**").permitAll()
+                                // catch all rule
+                                .anyRequest().authenticated())
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(
+                        Customizer.withDefaults()
+                ))
+                .addFilterAfter(userProvisioningFilter, BearerTokenAuthenticationFilter.class);
+
 
         return http.build();
     }

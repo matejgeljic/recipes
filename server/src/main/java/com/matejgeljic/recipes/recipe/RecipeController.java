@@ -2,8 +2,11 @@ package com.matejgeljic.recipes.recipe;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,21 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.UUID;
 
+import static com.matejgeljic.recipes.utils.JwtUtil.parseUserId;
+
 @RestController
 @RequestMapping("recipes")
 @RequiredArgsConstructor
+@Slf4j
 public class RecipeController {
     private final RecipeMapper recipeMapper;
     private final RecipeService recipeService;
 
     @PostMapping
     public ResponseEntity<CreateRecipeResponseDto> createRecipe(
+            @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestBody CreateRecipeRequestDto createRecipeRequestDto) {
 
-        //TODO replace next line with real userID
-        UUID userId = UUID.fromString("11111111-1111-1111-1111-111111111111");
-
         CreateRecipeRequest createRecipeRequest = recipeMapper.fromDto(createRecipeRequestDto);
+        UUID userId = parseUserId(jwt);
         Recipe createdRecipe = recipeService.createRecipe(userId, createRecipeRequest);
         CreateRecipeResponseDto createdRecipeResponseDto = recipeMapper.toDto(createdRecipe);
 
@@ -36,10 +41,10 @@ public class RecipeController {
 
     @PutMapping(path = "/{recipeId}")
     public ResponseEntity<UpdateRecipeResponseDto> updateRecipe(
+            @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID recipeId,
             @Valid @RequestBody UpdateRecipeRequestDto updateRecipeRequestDto) {
-        //TODO replace next line with real userID
-        UUID userId = UUID.fromString("11111111-1111-1111-1111-111111111111");
+        UUID userId = parseUserId(jwt);
         UpdateRecipeRequest updateRecipeRequest = recipeMapper.fromDto(updateRecipeRequestDto);
         Recipe updateRecipe = recipeService.updateRecipeForPublisher(userId, recipeId, updateRecipeRequest);
         UpdateRecipeResponseDto updateRecipeResponseDto = recipeMapper.toUpdateRecipeResponseDto(updateRecipe);

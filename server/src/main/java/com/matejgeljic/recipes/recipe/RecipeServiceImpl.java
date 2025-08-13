@@ -3,8 +3,11 @@ package com.matejgeljic.recipes.recipe;
 import com.matejgeljic.recipes.exception.IngredientNotFoundException;
 import com.matejgeljic.recipes.exception.RecipeNotFoundException;
 import com.matejgeljic.recipes.exception.RecipeUpdateException;
+import com.matejgeljic.recipes.exception.UserNotFoundException;
 import com.matejgeljic.recipes.recipe.ingredient.Ingredient;
 import com.matejgeljic.recipes.recipe.ingredient.UpdateIngredientRequest;
+import com.matejgeljic.recipes.user.User;
+import com.matejgeljic.recipes.user.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
@@ -24,11 +28,17 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public Recipe createRecipe(UUID publisherId, CreateRecipeRequest recipe) {
-        Recipe recipeToCreate = getRecipeToCreate(recipe);
+        User publisher = userRepository.findById(publisherId)
+                .orElseThrow(() -> new UserNotFoundException(
+                        String.format("User with id '%s' not found", publisherId)
+                ));
+
+        Recipe recipeToCreate = getRecipeToCreate(recipe, publisher);
 
         recipe.getIngredients().forEach(ingredientRequest -> {
             Ingredient ingredient = new Ingredient();
@@ -41,6 +51,26 @@ public class RecipeServiceImpl implements RecipeService {
         log.info("Recipe created successfully with id: {}", recipeToCreate.getId());
 
         return recipeRepository.save(recipeToCreate);
+    }
+
+    private static Recipe getRecipeToCreate(CreateRecipeRequest recipe, User publisher) {
+        Recipe recipeToCreate = new Recipe();
+
+        recipeToCreate.setName(recipe.getName());
+        recipeToCreate.setDescription(recipe.getDescription());
+        recipeToCreate.setInstructions(recipe.getInstructions());
+        recipeToCreate.setPreparationTime(recipe.getPreparationTime());
+        recipeToCreate.setServings(recipe.getServings());
+        recipeToCreate.setDishType(recipe.getDishType());
+        recipeToCreate.setDietaryInformation(recipe.getDietaryInformation());
+        recipeToCreate.setStatus(recipe.getStatus());
+        recipeToCreate.setPublisher(publisher);
+        return recipeToCreate;
+    }
+
+    @Override
+    public Optional<Recipe> getRecipeForPublisher(UUID publisherId, UUID recipeID) {
+        return recipeRepository.findByIdAndPublisherId(recipeID, publisherId);
     }
 
     @Override
@@ -105,19 +135,5 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Page<Recipe> getPublishedRecipes(Pageable pageable) {
         return recipeRepository.findByStatus(RecipeStatus.PUBLISHED, pageable);
-    }
-
-    private static Recipe getRecipeToCreate(CreateRecipeRequest recipe) {
-        Recipe recipeToCreate = new Recipe();
-
-        recipeToCreate.setName(recipe.getName());
-        recipeToCreate.setDescription(recipe.getDescription());
-        recipeToCreate.setInstructions(recipe.getInstructions());
-        recipeToCreate.setPreparationTime(recipe.getPreparationTime());
-        recipeToCreate.setServings(recipe.getServings());
-        recipeToCreate.setDishType(recipe.getDishType());
-        recipeToCreate.setDietaryInformation(recipe.getDietaryInformation());
-        recipeToCreate.setStatus(recipe.getStatus());
-        return recipeToCreate;
     }
 }
