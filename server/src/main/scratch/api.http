@@ -109,3 +109,7 @@ Content-Type: application/json
   "createdAt": "2025-08-12T14:38:37.469536",
   "updatedAt": "2025-08-12T14:38:37.469536"
 }
+
+### Get single Recipe
+# Run the login request first, then run this
+GET {{api-url}}/recipes/fc9e8806-6cdb-40dd-ba20-6d199b2ea9f9

@@ -2,6 +2,7 @@ package com.matejgeljic.recipes.recipe;
 
 import com.matejgeljic.recipes.recipe.ingredient.CreateIngredientRequest;
 import com.matejgeljic.recipes.recipe.ingredient.CreateIngredientRequestDto;
+import com.matejgeljic.recipes.recipe.ingredient.GetRecipeDetailsIngredientResponseDto;
 import com.matejgeljic.recipes.recipe.ingredient.Ingredient;
 import com.matejgeljic.recipes.recipe.ingredient.UpdateIngredientRequest;
 import com.matejgeljic.recipes.recipe.ingredient.UpdateIngredientRequestDto;
@@ -18,4 +19,6 @@ public interface RecipeMapper {
     UpdateRecipeRequest fromDto(UpdateRecipeRequestDto dto);
     UpdateIngredientResponseDto toUpdateIngredientResponseDto(Ingredient ingredient);
     UpdateRecipeResponseDto toUpdateRecipeResponseDto(Recipe recipe);
+    GetRecipeDetailsIngredientResponseDto toGetRecipeDetailsIngredientResponseDto(Ingredient ingredient);
+    GetRecipeDetailsResponseDto toGetRecipeDetailsResponseDto(Recipe recipe);
 }

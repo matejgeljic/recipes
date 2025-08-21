@@ -19,7 +19,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize ->
                         authorize
-                                .requestMatchers(HttpMethod.GET, "/api/v1/recipes/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "recipes/**").permitAll()
                                 // catch all rule
                                 .anyRequest().authenticated())
                 .csrf(AbstractHttpConfigurer::disable)

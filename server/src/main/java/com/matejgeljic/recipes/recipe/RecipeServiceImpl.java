@@ -69,8 +69,8 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
-    public Optional<Recipe> getRecipeForPublisher(UUID publisherId, UUID recipeID) {
-        return recipeRepository.findByIdAndPublisherId(recipeID, publisherId);
+    public Optional<Recipe> getRecipe(UUID recipeID) {
+        return recipeRepository.findById(recipeID);
     }
 
     @Override
