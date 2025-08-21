@@ -7,6 +7,8 @@ import com.matejgeljic.recipes.recipe.ingredient.Ingredient;
 import com.matejgeljic.recipes.recipe.ingredient.UpdateIngredientRequest;
 import com.matejgeljic.recipes.recipe.ingredient.UpdateIngredientRequestDto;
 import com.matejgeljic.recipes.recipe.ingredient.UpdateIngredientResponseDto;
+import com.matejgeljic.recipes.user.PublisherDto;
+import com.matejgeljic.recipes.user.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
@@ -21,4 +23,5 @@ public interface RecipeMapper {
     UpdateRecipeResponseDto toUpdateRecipeResponseDto(Recipe recipe);
     GetRecipeDetailsIngredientResponseDto toGetRecipeDetailsIngredientResponseDto(Ingredient ingredient);
     GetRecipeDetailsResponseDto toGetRecipeDetailsResponseDto(Recipe recipe);
+    PublisherDto toPublisherDto(User user);
 }

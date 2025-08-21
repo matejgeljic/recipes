@@ -1,6 +1,7 @@
 package com.matejgeljic.recipes.recipe;
 
 import com.matejgeljic.recipes.recipe.ingredient.GetRecipeDetailsIngredientResponseDto;
+import com.matejgeljic.recipes.user.PublisherDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +26,7 @@ public class GetRecipeDetailsResponseDto {
     private DishType dishType;
     private DietaryInformation dietaryInformation;
     private RecipeStatus status;
-    //TODO publisher
+    private PublisherDto publisher;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
