@@ -3,6 +3,10 @@ package com.matejgeljic.recipes.recipe;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -63,4 +67,42 @@ public class RecipeController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping
+    public ResponseEntity<Page<GetRecipeSummaryResponseDto>> getAllPublishedRecipes(
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        Page<Recipe> recipes = recipeService.getPublishedRecipes(pageable);
+        Page<GetRecipeSummaryResponseDto> recipeDtos = recipes.map(recipeMapper::toGetRecipeSummaryResponseDto);
+
+        return ResponseEntity.ok(recipeDtos);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<Page<GetRecipeSummaryResponseDto>> getPublishedRecipesByUser (
+            @PathVariable UUID userId,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        Page<Recipe> recipes = recipeService.getPublishedRecipesByUser(userId, pageable);
+
+        if (recipes.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        Page<GetRecipeSummaryResponseDto> recipeDtos = recipes.map(recipeMapper::toGetRecipeSummaryResponseDto);
+
+        return ResponseEntity.ok(recipeDtos);
+    }
+
+    @GetMapping("/my-recipes")
+    public ResponseEntity<Page<GetRecipeSummaryResponseDto>> getMyRecipes(
+            @AuthenticationPrincipal Jwt jwt,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        UUID userId = parseUserId(jwt);
+
+        Page<Recipe> recipes = recipeService.getCurrentUserRecipes(userId, pageable);
+        Page<GetRecipeSummaryResponseDto> recipeDtos = recipes.map(recipeMapper::toGetRecipeSummaryResponseDto);
+
+        return ResponseEntity.ok(recipeDtos);
+    }
 }

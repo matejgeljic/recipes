@@ -15,6 +15,12 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
     Page<Recipe> findByPublisherId(UUID publisherId, Pageable pageable);
     Optional<Recipe> findByIdAndPublisherId(UUID id, UUID publisherId);
     Page<Recipe> findByStatus(RecipeStatus status, Pageable pageable);
-    @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.publisher WHERE r.id = :id")
-    Optional<Recipe> findByIdWithPublisher(@Param("id") UUID id);
+    @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.publisher WHERE r.id = :id AND r.status = :status")
+    Optional<Recipe> findByIdAndStatusWithPublisher(@Param("id") UUID id, @Param("status") RecipeStatus status);
+    @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.publisher WHERE r.status = :status")
+    Page<Recipe> findByStatusWithPublisher(@Param("status") RecipeStatus status, Pageable pageable);
+    @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.publisher WHERE r.publisher.id = :userId")
+    Page<Recipe> findByPublisherIdWithPublisher(@Param("userId") UUID userId, Pageable pageable);
+    @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.publisher WHERE r.publisher.id = :userId AND r.status = :status")
+    Page<Recipe> findByPublisherIdAndStatusWithPublisher(@Param("userId") UUID userId, @Param("status") RecipeStatus status, Pageable pageable);
 }

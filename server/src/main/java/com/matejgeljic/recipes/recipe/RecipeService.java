@@ -11,4 +11,6 @@ public interface RecipeService {
     Optional<Recipe> getRecipe(UUID recipeID);
     Recipe updateRecipeForPublisher(UUID publisherId, UUID recipeId, UpdateRecipeRequest recipe);
     Page<Recipe> getPublishedRecipes(Pageable pageable);
+    Page<Recipe> getPublishedRecipesByUser(UUID publisherID, Pageable pageable);
+    Page<Recipe> getCurrentUserRecipes(UUID currentUserId, Pageable pageable);
 }

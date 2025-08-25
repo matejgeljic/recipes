@@ -24,4 +24,5 @@ public interface RecipeMapper {
     GetRecipeDetailsIngredientResponseDto toGetRecipeDetailsIngredientResponseDto(Ingredient ingredient);
     GetRecipeDetailsResponseDto toGetRecipeDetailsResponseDto(Recipe recipe);
     PublisherDto toPublisherDto(User user);
+    GetRecipeSummaryResponseDto toGetRecipeSummaryResponseDto(Recipe recipe);
 }

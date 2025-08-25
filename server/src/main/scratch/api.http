@@ -2,7 +2,8 @@
 @keycloak-realm = recipes-sharing-platform
 @keycloak-url = http://localhost:9090
 @client-id = recipes-sharing-platform-app
-@test-username = test.user@gmail.com
+@test-username1 = test.user@gmail.com
+@test-username2 = test.user2@gmail.com
 @test-password = password
 @client-secret = 2gPzFv9qEoOBGZfDr2nWBSDGi7DL0TOb
 @api-url = http://localhost:4000/api/v1
@@ -13,7 +14,7 @@
 POST {{keycloak-url}}/realms/{{keycloak-realm}}/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=password&client_id={{client-id}}&client_secret={{client-secret}}&username={{test-username}}&password={{test-password}}
+grant_type=password&client_id={{client-id}}&client_secret={{client-secret}}&username={{test-username1}}&password={{test-password}}
 > {%
     client.global.set("auth_token", response.body.access_token);
     client.global.set("refresh_token", response.body.refresh_token);
@@ -111,5 +112,15 @@ Content-Type: application/json
 }
 
 ### Get single Recipe
+GET {{api-url}}/recipes/d5240353-beba-4a50-80c2-acdcaf59197d
+
+### Get all published recepies (summary)
+GET {{api-url}}/recipes
+
+### Get all published recepies for a single user (summary)
+GET {{api-url}}/recipes/user/c0b89011-19e3-4d20-a7db-4030d86e6741
+
+### Get all recepies for a single user (summary)
 # Run the login request first, then run this
-GET {{api-url}}/recipes/fc9e8806-6cdb-40dd-ba20-6d199b2ea9f9
+GET {{api-url}}/recipes/my-recipes
+Authorization: Bearer {{auth_token}}

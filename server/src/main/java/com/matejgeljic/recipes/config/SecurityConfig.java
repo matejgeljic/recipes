@@ -19,6 +19,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(authorize ->
                         authorize
+                                .requestMatchers(HttpMethod.GET, "recipes/my-recipes").authenticated()
                                 .requestMatchers(HttpMethod.GET, "recipes/**").permitAll()
                                 // catch all rule
                                 .anyRequest().authenticated())

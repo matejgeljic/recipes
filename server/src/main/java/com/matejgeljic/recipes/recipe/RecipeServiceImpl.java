@@ -70,17 +70,17 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Optional<Recipe> getRecipe(UUID recipeID) {
-        return recipeRepository.findByIdWithPublisher(recipeID);
+        return recipeRepository.findByIdAndStatusWithPublisher(recipeID, RecipeStatus.PUBLISHED);
     }
 
     @Override
     @Transactional
     public Recipe updateRecipeForPublisher(UUID publisherId, UUID recipeId, UpdateRecipeRequest recipe) {
-        if(recipe.getId() == null) {
+        if (recipe.getId() == null) {
             throw new RecipeNotFoundException("Recipe ID cannot be null");
         }
 
-        if(!recipe.getId().equals(recipeId)) {
+        if (!recipe.getId().equals(recipeId)) {
             throw new RecipeUpdateException("Cannot update the ID of a recipe");
         }
 
@@ -110,15 +110,15 @@ public class RecipeServiceImpl implements RecipeService {
         Map<UUID, Ingredient> existingIngredientIndex = existingRecipe.getIngredients().stream()
                 .collect(Collectors.toMap(Ingredient::getId, Function.identity()));
 
-        for(UpdateIngredientRequest ingredient : recipe.getIngredients()) {
-            if(ingredient.getId() == null) {
+        for (UpdateIngredientRequest ingredient : recipe.getIngredients()) {
+            if (ingredient.getId() == null) {
                 // Create
                 Ingredient newIngredient = new Ingredient();
                 newIngredient.setName(ingredient.getName());
                 newIngredient.setQuantity(ingredient.getQuantity());
                 newIngredient.setUnit(ingredient.getUnit());
                 existingRecipe.getIngredients().add(newIngredient);
-            } else if(existingIngredientIndex.containsKey(ingredient.getId())) {
+            } else if (existingIngredientIndex.containsKey(ingredient.getId())) {
                 // update
                 Ingredient existingIngredient = existingIngredientIndex.get(ingredient.getId());
                 existingIngredient.setName(ingredient.getName());
@@ -134,6 +134,16 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Page<Recipe> getPublishedRecipes(Pageable pageable) {
-        return recipeRepository.findByStatus(RecipeStatus.PUBLISHED, pageable);
+        return recipeRepository.findByStatusWithPublisher(RecipeStatus.PUBLISHED, pageable);
+    }
+
+    @Override
+    public Page<Recipe> getPublishedRecipesByUser(UUID publisherID, Pageable pageable) {
+        return recipeRepository.findByPublisherIdAndStatusWithPublisher(publisherID, RecipeStatus.PUBLISHED, pageable);
+    }
+
+    @Override
+    public Page<Recipe> getCurrentUserRecipes(UUID currentUserId, Pageable pageable) {
+        return recipeRepository.findByPublisherIdWithPublisher(currentUserId, pageable);
     }
 }
