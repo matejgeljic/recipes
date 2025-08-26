@@ -23,4 +23,14 @@ public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
     Page<Recipe> findByPublisherIdWithPublisher(@Param("userId") UUID userId, Pageable pageable);
     @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.publisher WHERE r.publisher.id = :userId AND r.status = :status")
     Page<Recipe> findByPublisherIdAndStatusWithPublisher(@Param("userId") UUID userId, @Param("status") RecipeStatus status, Pageable pageable);
+    @Query(value = "SELECT * FROM recipes WHERE " +
+            "status = 'PUBLISHED' AND " +
+            "to_tsvector('english', COALESCE(name, '') || ' ' || COALESCE(description, '')) " +
+            "@@ plainto_tsquery('english', :searchTerm)",
+            countQuery = "SELECT count(*) FROM recipes WHERE " +
+                    "status = 'PUBLISHED' AND " +
+                    "to_tsvector('english', COALESCE(name, '') || ' ' || COALESCE(description, '')) " +
+                    "@@ plainto_tsquery('english', :searchTerm)",
+            nativeQuery = true)
+    Page<Recipe> searchPublishedRecipes(@Param("searchTerm") String searchTerm, Pageable pageable);
 }

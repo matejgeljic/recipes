@@ -13,4 +13,5 @@ public interface RecipeService {
     Page<Recipe> getPublishedRecipes(Pageable pageable);
     Page<Recipe> getPublishedRecipesByUser(UUID publisherID, Pageable pageable);
     Page<Recipe> getCurrentUserRecipes(UUID currentUserId, Pageable pageable);
+    Page<Recipe> searchPublishedRecipes(String query, Pageable pageable);
 }

@@ -28,7 +28,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "name": "Spaghetti Bolognese",
+  "name": "Pizza Cap",
   "description": "Classic Italian pasta with meat sauce",
   "ingredients": [
     {
@@ -57,7 +57,7 @@ Content-Type: application/json
   "servings": 2,
   "dishType": "MAIN_DISH",
   "dietaryInformation": "NONE",
-  "status": "PUBLISHED"
+  "status": "DRAFT"
 }
 
 ### Update existing Recipe
@@ -116,6 +116,9 @@ GET {{api-url}}/recipes/d5240353-beba-4a50-80c2-acdcaf59197d
 
 ### Get all published recepies (summary)
 GET {{api-url}}/recipes
+
+### Get all published recepies that mech the search param
+GET {{api-url}}/recipes?search=pizza
 
 ### Get all published recepies for a single user (summary)
 GET {{api-url}}/recipes/user/c0b89011-19e3-4d20-a7db-4030d86e6741

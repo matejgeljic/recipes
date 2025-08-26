@@ -146,4 +146,9 @@ public class RecipeServiceImpl implements RecipeService {
     public Page<Recipe> getCurrentUserRecipes(UUID currentUserId, Pageable pageable) {
         return recipeRepository.findByPublisherIdWithPublisher(currentUserId, pageable);
     }
+
+    @Override
+    public Page<Recipe> searchPublishedRecipes(String query, Pageable pageable) {
+        return recipeRepository.searchPublishedRecipes(query, pageable);
+    }
 }
