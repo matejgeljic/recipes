@@ -12,13 +12,8 @@ import java.util.UUID;
 
 @Repository
 public interface RecipeRepository extends JpaRepository<Recipe, UUID> {
-    Page<Recipe> findByPublisherId(UUID publisherId, Pageable pageable);
     Optional<Recipe> findByIdAndPublisherId(UUID id, UUID publisherId);
-    Page<Recipe> findByStatus(RecipeStatus status, Pageable pageable);
-    @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.publisher WHERE r.id = :id AND r.status = :status")
-    Optional<Recipe> findByIdAndStatusWithPublisher(@Param("id") UUID id, @Param("status") RecipeStatus status);
-    @Query("SELECT DISTINCT r FROM Recipe r " +
-            "WHERE r.id = :id AND r.status = :status")
+    @Query("SELECT DISTINCT r FROM Recipe r WHERE r.id = :id AND r.status = :status")
     Optional<Recipe> findByIdAndStatusWithAllDetails(@Param("id") UUID id, @Param("status") RecipeStatus status);
     @Query("SELECT r FROM Recipe r LEFT JOIN FETCH r.publisher WHERE r.status = :status")
     Page<Recipe> findByStatusWithPublisher(@Param("status") RecipeStatus status, Pageable pageable);

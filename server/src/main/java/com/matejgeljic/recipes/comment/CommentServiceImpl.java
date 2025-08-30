@@ -43,11 +43,4 @@ public class CommentServiceImpl implements CommentService {
 
         return commentRepository.save(commentToCreate);
     }
-
-    @Override
-    public List<Comment> getCommentsByRecipeId(UUID recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId).orElseThrow(() -> new RecipeNotFoundException(String.format("Recipe with id '%s' not found", recipeId)));
-
-        return commentRepository.findByRecipeWithUser(recipe);
-    }
 }

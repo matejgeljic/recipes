@@ -43,13 +43,4 @@ public class CommentController {
 
         return new ResponseEntity<>(createCommentResponseDto, HttpStatus.CREATED);
     }
-
-    @GetMapping
-    public ResponseEntity<List<GetCommentResponseDto>> getRecipeComments(@PathVariable UUID recipeId) {
-        List<Comment> comments = commentService.getCommentsByRecipeId(recipeId);
-
-        List<GetCommentResponseDto> responseDtos = commentMapper.toGetCommentResponseDtoList(comments);
-
-        return ResponseEntity.ok(responseDtos);
-    }
 }
