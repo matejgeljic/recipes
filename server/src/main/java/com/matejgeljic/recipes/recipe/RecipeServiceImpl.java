@@ -70,7 +70,7 @@ public class RecipeServiceImpl implements RecipeService {
 
     @Override
     public Optional<Recipe> getRecipe(UUID recipeID) {
-        return recipeRepository.findByIdAndStatusWithPublisher(recipeID, RecipeStatus.PUBLISHED);
+        return recipeRepository.findByIdAndStatusWithAllDetails(recipeID, RecipeStatus.PUBLISHED);
     }
 
     @Override

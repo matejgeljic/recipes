@@ -1,5 +1,6 @@
 package com.matejgeljic.recipes.recipe;
 
+import com.matejgeljic.recipes.comment.Comment;
 import com.matejgeljic.recipes.recipe.ingredient.Ingredient;
 import com.matejgeljic.recipes.user.User;
 import jakarta.persistence.CascadeType;
@@ -81,7 +82,10 @@ public class Recipe {
     @JoinColumn(name = "publisher_id")
     private User publisher;
 
-    // TODO: add feedback and cover photo
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+
+    // TODO: add rating and cover photo
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)

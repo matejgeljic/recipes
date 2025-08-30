@@ -14,7 +14,7 @@
 POST {{keycloak-url}}/realms/{{keycloak-realm}}/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
-grant_type=password&client_id={{client-id}}&client_secret={{client-secret}}&username={{test-username1}}&password={{test-password}}
+grant_type=password&client_id={{client-id}}&client_secret={{client-secret}}&username={{test-username2}}&password={{test-password}}
 > {%
     client.global.set("auth_token", response.body.access_token);
     client.global.set("refresh_token", response.body.refresh_token);
@@ -28,7 +28,7 @@ Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "name": "Pizza Cap",
+  "name": "Pizza Capri",
   "description": "Classic Italian pasta with meat sauce",
   "ingredients": [
     {
@@ -57,22 +57,22 @@ Content-Type: application/json
   "servings": 2,
   "dishType": "MAIN_DISH",
   "dietaryInformation": "NONE",
-  "status": "DRAFT"
+  "status": "PUBLISHED"
 }
 
 ### Update existing Recipe
 # Run the login request first, then run this
-PUT {{api-url}}/recipes/29280218-71d6-458d-9746-388942275d1b
+PUT {{api-url}}/recipes/881a98d4-c0f7-4996-8d42-3982a3f826c4
 Authorization: Bearer {{auth_token}}
 Content-Type: application/json
 
 {
-  "id": "29280218-71d6-458d-9746-388942275d1b",
+  "id": "881a98d4-c0f7-4996-8d42-3982a3f826c4",
   "name": "Spaghetti Bolognese updated",
   "description": "Classic Italian pasta with meat sauce",
   "ingredients": [
     {
-      "id": "87e0dd78-8439-41cb-956b-cbd087223fbb",
+      "id": "9f7077ac-689b-4e8c-abfa-840c9945ad52",
       "name": "Spaghetti updated",
       "quantity": 200.0,
       "unit": "GRAMS",
@@ -80,7 +80,7 @@ Content-Type: application/json
       "updatedAt": "2025-08-12T14:38:37.470493"
     },
     {
-      "id": "ff759247-2b20-4cb7-9cc3-dbf086753cae",
+      "id": "9b0b7770-1402-4ff1-a353-1fdc68623f48",
       "name": "Ground Beef",
       "quantity": 300.0,
       "unit": "GRAMS",
@@ -88,7 +88,7 @@ Content-Type: application/json
       "updatedAt": "2025-08-12T14:38:37.470586"
     },
     {
-      "id": "1072695a-1b14-4255-9618-124b9cc7b705",
+      "id": "eb1eea24-32ee-4ceb-9bf1-8b15a9415f8a",
       "name": "Tomato Sauce",
       "quantity": 150.0,
       "unit": "MILLILITERS",
@@ -112,7 +112,7 @@ Content-Type: application/json
 }
 
 ### Get single Recipe
-GET {{api-url}}/recipes/d5240353-beba-4a50-80c2-acdcaf59197d
+GET {{api-url}}/recipes/1323a4ee-533a-49ba-860e-57439aead478
 
 ### Get all published recepies (summary)
 GET {{api-url}}/recipes
@@ -121,9 +121,19 @@ GET {{api-url}}/recipes
 GET {{api-url}}/recipes?search=pizza
 
 ### Get all published recepies for a single user (summary)
-GET {{api-url}}/recipes/user/c0b89011-19e3-4d20-a7db-4030d86e6741
+GET {{api-url}}/recipes/user/66c8f446-8cdf-4c9b-a566-3e16175399fc
 
 ### Get all recepies for a single user (summary)
 # Run the login request first, then run this
 GET {{api-url}}/recipes/my-recipes
 Authorization: Bearer {{auth_token}}
+
+### Write a comment to a recipe
+# Run the login request first, then run this
+POST {{api-url}}/recipes/1323a4ee-533a-49ba-860e-57439aead478/comments
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "content": "Good recipe indeed"
+}

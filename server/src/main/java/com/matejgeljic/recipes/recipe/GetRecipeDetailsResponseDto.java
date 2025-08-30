@@ -1,5 +1,6 @@
 package com.matejgeljic.recipes.recipe;
 
+import com.matejgeljic.recipes.comment.GetCommentResponseDto;
 import com.matejgeljic.recipes.recipe.ingredient.GetRecipeDetailsIngredientResponseDto;
 import com.matejgeljic.recipes.user.PublisherDto;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class GetRecipeDetailsResponseDto {
     private DietaryInformation dietaryInformation;
     private RecipeStatus status;
     private PublisherDto publisher;
+    private List<GetCommentResponseDto> comments = new ArrayList<>();
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

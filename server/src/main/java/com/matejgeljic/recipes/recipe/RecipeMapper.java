@@ -1,5 +1,6 @@
 package com.matejgeljic.recipes.recipe;
 
+import com.matejgeljic.recipes.comment.CommentMapper;
 import com.matejgeljic.recipes.recipe.ingredient.CreateIngredientRequest;
 import com.matejgeljic.recipes.recipe.ingredient.CreateIngredientRequestDto;
 import com.matejgeljic.recipes.recipe.ingredient.GetRecipeDetailsIngredientResponseDto;
@@ -12,7 +13,7 @@ import com.matejgeljic.recipes.user.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {CommentMapper.class})
 public interface RecipeMapper {
     CreateIngredientRequest fromDto(CreateIngredientRequestDto dto);
     CreateRecipeRequest fromDto(CreateRecipeRequestDto dto);
