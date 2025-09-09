@@ -1,5 +1,6 @@
 package com.matejgeljic.recipes.recipe;
 
+import com.matejgeljic.recipes.rating.RatingService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ import static com.matejgeljic.recipes.utils.JwtUtil.parseUserId;
 public class RecipeController {
     private final RecipeMapper recipeMapper;
     private final RecipeService recipeService;
+    private final RatingService ratingService;
 
     @PostMapping
     public ResponseEntity<CreateRecipeResponseDto> createRecipe(
@@ -62,10 +64,24 @@ public class RecipeController {
 
     @GetMapping(path = "/{recipeId}")
     public ResponseEntity<GetRecipeDetailsResponseDto> getRecipe(
-            @PathVariable UUID recipeId
+            @PathVariable UUID recipeId,
+            @AuthenticationPrincipal Jwt jwt
     ) {
         return recipeService.getRecipe(recipeId)
-                .map(recipeMapper::toGetRecipeDetailsResponseDto)
+                .map(recipe -> {
+                    GetRecipeDetailsResponseDto dto = recipeMapper.toGetRecipeDetailsResponseDto(recipe);
+                    if(jwt != null) {
+                        try {
+                            UUID userId = parseUserId(jwt);
+                            ratingService.getUserRatingForRecipe(userId, recipeId)
+                                    .ifPresent(rating -> dto.setCurrentUserRating(rating.getValue()));
+                        } catch (Exception e) {
+                            // TODO fix exception
+                            log.error("Error while getting user rating", e);
+                        }
+                    }
+                    return dto;
+                })
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }

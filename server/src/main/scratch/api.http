@@ -113,6 +113,7 @@ Content-Type: application/json
 
 ### Get single Recipe
 GET {{api-url}}/recipes/1323a4ee-533a-49ba-860e-57439aead478
+Authorization: Bearer {{auth_token}}
 
 ### Get all published recepies (summary)
 GET {{api-url}}/recipes
@@ -137,3 +138,17 @@ Content-Type: application/json
 {
   "content": "Good recipe indeed"
 }
+
+### Rate recipe
+POST {{api-url}}/recipes/1323a4ee-533a-49ba-860e-57439aead478/ratings
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "value": 5
+}
+
+### Remove rating
+DELETE {{api-url}}/recipes/1323a4ee-533a-49ba-860e-57439aead478/ratings
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json

@@ -85,7 +85,13 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
-    // TODO: add rating and cover photo
+    @Column(name = "average_rating")
+    private Double averageRating;
+
+    @Column(name = "total_ratings")
+    private Integer totalRatings = 0;
+
+    // TODO: add cover photo
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)

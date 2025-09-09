@@ -29,6 +29,9 @@ public class GetRecipeDetailsResponseDto {
     private RecipeStatus status;
     private PublisherDto publisher;
     private List<GetCommentResponseDto> comments = new ArrayList<>();
+    private Double averageRating;
+    private Integer totalRatings;
+    private Integer currentUserRating;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
