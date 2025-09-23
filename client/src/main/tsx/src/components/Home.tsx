@@ -1,12 +1,18 @@
 import {useAuth} from "react-oidc-context";
 import {Link} from "react-router";
+import {useRecipesLoader} from "../useRecipes.ts";
 
 export const Home = () => {
     const { isAuthenticated, signinRedirect, signoutRedirect, isLoading } = useAuth();
+    const recipes = useRecipesLoader()
+
+    const {data} = recipes
 
     if(isLoading) {
         return <h1>loading...</h1>
     }
+
+  console.log(data)
 
     return (
         <>
