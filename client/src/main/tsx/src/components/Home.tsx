@@ -12,7 +12,7 @@ export const Home = () => {
         return <h1>loading...</h1>
     }
 
-  console.log(data)
+  console.log(data?.data.content)
 
     return (
         <>
