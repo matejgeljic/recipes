@@ -1,22 +1,22 @@
-import type {PropsWithChildren} from "react";
-import {useAuth} from "react-oidc-context";
-import {Navigate, useLocation} from "react-router";
+import type { PropsWithChildren } from "react";
+import { useAuth } from "react-oidc-context";
+import { Navigate, useLocation } from "react-router";
 
-export const ProtectedRoute = ({children}: PropsWithChildren) => {
-    const { isLoading, isAuthenticated } = useAuth();
-    const location = useLocation();
+export const ProtectedRoute = ({ children }: PropsWithChildren) => {
+  const { isLoading, isAuthenticated } = useAuth();
+  const location = useLocation();
 
-    if (isLoading) {
-        return <p>Loading...</p>;
-    }
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
-    if (!isAuthenticated) {
-        localStorage.setItem(
-            "redirectPath",
-            globalThis.location.pathname + globalThis.location.search,
-        );
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
+  if (!isAuthenticated) {
+    localStorage.setItem(
+      "redirectPath",
+      globalThis.location.pathname + globalThis.location.search,
+    );
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
-    return children;
-}
+  return children;
+};

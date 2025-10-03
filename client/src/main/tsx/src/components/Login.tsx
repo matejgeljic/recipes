@@ -1,17 +1,17 @@
-import {useEffect} from "react";
-import {useAuth} from "react-oidc-context";
+import { useEffect } from "react";
+import { useAuth } from "react-oidc-context";
 
 export const Login = () => {
-    const { isLoading, isAuthenticated, signinRedirect } = useAuth();
+  const { isLoading, isAuthenticated, signinRedirect } = useAuth();
 
-    useEffect(() => {
-        if (isLoading) {
-            return;
-        }
-        if (!isAuthenticated) {
-            signinRedirect();
-        }
-    }, [isLoading, isAuthenticated, signinRedirect]);
+  useEffect(() => {
+    if (isLoading) {
+      return;
+    }
+    if (!isAuthenticated) {
+      signinRedirect();
+    }
+  }, [isLoading, isAuthenticated, signinRedirect]);
 
-    return <div>Redirecting to login...</div>;
-}
+  return <div>Redirecting to login...</div>;
+};
