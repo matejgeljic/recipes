@@ -61,10 +61,10 @@ export const Heading = ({
     headingAligns[align],
     headingColors[color],
     size ? headingSizes[size] : headingSizes[tagToSize[tag]],
-    "tw-overflow-clip",
-    "tw-m-0",
-    "tw-p-0",
-    "tw-list-none",
+    "overflow-clip",
+    "m-0",
+    "p-0",
+    "list-none",
   ]
     .filter(Boolean)
     .join(" ");
