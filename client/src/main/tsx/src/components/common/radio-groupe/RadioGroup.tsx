@@ -108,7 +108,6 @@ const RadioGroupContent = ({
   name,
   children,
 }: PropsWithChildren<{ isCollapsed: boolean; name: string }>) => {
-
   return (
     <AnimatePresence initial={false}>
       {!isCollapsed && (

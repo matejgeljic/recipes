@@ -60,6 +60,7 @@ export interface TextProps {
   tag?: TextTag;
   underline?: boolean;
   weight?: TextWeight;
+  additionalClasses?: string;
 }
 
 export const Text = ({
@@ -71,6 +72,7 @@ export const Text = ({
   testId,
   underline = false,
   weight = "regular",
+  additionalClasses = "",
 }: TextProps) => {
   const classNames = [
     textAligns[align],
@@ -85,6 +87,7 @@ export const Text = ({
     "break-words",
     "hyphens-auto",
     "list-none",
+    additionalClasses,
   ]
     .filter(Boolean)
     .join(" ");

@@ -45,6 +45,7 @@ export interface HeadingProps {
   size?: HeadingSize;
   tag?: HeadingTag;
   testId?: string;
+  additionalClasses?: string;
 }
 
 export const Heading = ({
@@ -54,6 +55,7 @@ export const Heading = ({
   size,
   tag = "h1",
   testId,
+  additionalClasses = "",
 }: HeadingProps) => {
   const classNames = [
     "font-semibold",
@@ -65,6 +67,7 @@ export const Heading = ({
     "m-0",
     "p-0",
     "list-none",
+    additionalClasses,
   ]
     .filter(Boolean)
     .join(" ");
