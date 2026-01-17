@@ -6,8 +6,10 @@
   --color-dark-blue: #111214;
   --color-blue: #5b7fff;
   --color-white: #ffffff;
+    --color-black: #000000;
   --color-grey: #909090;
   --color-light: #dedede;
+    --color-base: #ECECEC;
   --color-success: #197e10;
   --color-error: #cc1922;
 }

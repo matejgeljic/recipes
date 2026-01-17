@@ -1,4 +1,4 @@
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, KeyboardEvent } from "react";
 import { Text } from "../text/Text";
 
 type InputState = "none" | "error" | "success";
@@ -8,6 +8,7 @@ export interface InputProps {
   label: string;
   value: string;
   onChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onKeyDown?: (e: KeyboardEvent<HTMLInputElement>) => void;
   type?: InputType;
   state?: InputState;
   description?: string;
@@ -28,6 +29,7 @@ export const Input = ({
   label,
   value,
   onChange,
+                          onKeyDown,
   type = "text",
   state = "none",
   description,
@@ -57,6 +59,7 @@ export const Input = ({
         type={type}
         value={value}
         onChange={onChange}
+        onKeyDown={onKeyDown}
         placeholder={placeholder}
         required={required}
         aria-required={required}
@@ -69,8 +72,8 @@ export const Input = ({
           "bg-white",
           "outline-none",
           "transition-colors duration-150",
-          "text-base",
-          "placeholder-gray-",
+          "text-grey",
+          "placeholder-gray",
           "border",
           stateBorder[state],
         ].join(" ")}
@@ -80,7 +83,7 @@ export const Input = ({
   );
 };
 
-const InputLabel = ({
+export const InputLabel = ({
   inputId,
   hideLabel,
   label,
@@ -105,7 +108,7 @@ const InputLabel = ({
   );
 };
 
-const InputDescription = ({
+export const InputDescription = ({
   description,
   inputId,
 }: {

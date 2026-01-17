@@ -13,6 +13,7 @@ export type HeadingAlign = keyof typeof headingAligns;
 const headingColors = {
   inherit: "[color:inherit]",
   black: "text-black",
+    white: "text-white",
 };
 
 export type HeadingColor = keyof typeof headingColors;
